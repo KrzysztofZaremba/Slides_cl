@@ -19,8 +19,7 @@ output:
 </style>
 
 ```{r setup, include=FALSE}
-
-knitr::opts_chunk$set(echo = FALSE,dpi=300)
+knitr::opts_chunk$set(echo = FALSE, dpi = 300)
 library(shiny)
 library(ggplot2)
 library(forecast)
@@ -31,21 +30,19 @@ library(reshape)
 library(spData)
 library(leaflet)
 library(readr)
-library(ggplot2)
 library(gridExtra)
-library(dplyr)
 library(hrbrthemes)
 library(viridis)
 library(gapminder)
 library(knitr)
 library(kableExtra)
 library(DT)
-
+load("sample_listing.Rda")
 ```
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
-style_mono_accent(base_color = "#43418A", 
+style_mono_accent(base_color = "#43418A",
 colors = c(
   red = "#f34213",
   purple = "#3e2f5b",
@@ -54,7 +51,6 @@ colors = c(
   blue = "#1E90FF",
   white = "#FFFFFF"
 ))
-load("sample_listing.Rda")
 ```
 
 
@@ -155,10 +151,10 @@ text(0, 0.2, "95%", col = "black", cex = 1.5)
 
 \begin{align*}
 0.95&= P(-1.96<Z<1.96) \\
-&= P(z_{-\frac{\alpha}{2}}<Z<z_{\frac{\alpha}{2}}) \\
-&= P(z_{-\frac{\alpha}{2}}<\frac{\bar{X}-\mu}{\sigma/\sqrt  n}<z_{\frac{\alpha}{2}}) \\
-&= P(z_{-\frac{\alpha}{2}}\sigma/ \sqrt n<\bar{X}-\mu<z_{\frac{\alpha}{2}}\sigma/\sqrt  n) \\
-&= P(\mu-z_{-\frac{\alpha}{2}}\sigma/\sqrt  n< \bar{X} <\mu+z_{\frac{\alpha}{2}}\sigma/\sqrt  n) \\
+&= P(-z_{\frac{\alpha}{2}}<Z<z_{\frac{\alpha}{2}}) \\
+&= P\left(-z_{\frac{\alpha}{2}}<\frac{\bar{X}-\mu}{\sigma/\sqrt  n}<z_{\frac{\alpha}{2}}\right) \\
+&= P\left(-z_{\frac{\alpha}{2}}\cdot\sigma/ \sqrt n<\bar{X}-\mu<z_{\frac{\alpha}{2}}\cdot\sigma/\sqrt  n\right) \\
+&= P\left(\mu-z_{\frac{\alpha}{2}}\cdot\sigma/\sqrt  n< \bar{X} <\mu+z_{\frac{\alpha}{2}}\cdot\sigma/\sqrt  n\right) \\
 \end{align*}
 
 
@@ -172,7 +168,7 @@ text(0, 0.2, "95%", col = "black", cex = 1.5)
 
   - In large sample, $s \rightarrow \sigma$, so $\frac{\bar{X}-\mu}{s/\sqrt  n} \rightarrow N(0,1)$
   - So in large samples, standardized sample mean (with estimated standard deviation) will also have normal distribution
-  - You man need a bit higher n to ensure $s \rightarrow \sigma$
+  - You may need a bit higher n to ensure $s \rightarrow \sigma$
 
 ---
 
@@ -242,7 +238,7 @@ text(position, 0.21, expression(bar(x)), col = "red", cex = 1.2)
 
 `r knitr::include_url('https://seeing-theory.brown.edu/frequentist-inference/index.html#section2', height='400px')`
 
-  Source: [https://seeing-theory.brown.edu/frequentist-inference/index.html#section2)
+  Source: [Seeing Theory](https://seeing-theory.brown.edu/frequentist-inference/index.html#section2)
 
 
 ---
@@ -320,7 +316,7 @@ $$P(Z>z_{0.005})=0.005 \qquad\text{or}\qquad P(Z<z_{0.005})=0.995$$
 ---
 
 `r knitr::include_url('https://www.mathsisfun.com/data/standard-normal-distribution-table.html', height='480px')`
-  Source: [https://www.mathsisfun.com/data/standard-normal-distribution-table.html)
+  Source: [Maths is Fun](https://www.mathsisfun.com/data/standard-normal-distribution-table.html)
 
 
 
@@ -363,14 +359,14 @@ text(3.5, 0.1, "0.5%", col = "black", cex = 1.5)
 
 ---
 ### Constructing CI: example
-Let's calculate 90% CI for average price of listing with grade>4.5
+Let's calculate 90% CI for average price of listings with cleanliness score > 4.5
 
 1. Take an IID sample 
   - $n=100$ $\checkmark$
 
 --
 2. Calculate mean $\bar{x}$ and standard deviation $s$
-  - $\bar{x}=$ `r format(round(mean(Sample_list[Sample_list$clean==TRUE,]$price),2), scientific=FALSE)` and $s=$ `r format(round(sd(Sample_list[Sample_list$clean==TRUE,]$price),2), scientific=FALSE)`
+  - $\bar{x}=$ `r format(round(mean(Sample_list[Sample_list$clean==TRUE | Sample_list$clean=="Clean",]$price),2), scientific=FALSE)` and $s=$ `r format(round(sd(Sample_list[Sample_list$clean==TRUE | Sample_list$clean=="Clean",]$price),2), scientific=FALSE)`
 
 --
 3. Pick confidence level
@@ -385,7 +381,7 @@ Let's calculate 90% CI for average price of listing with grade>4.5
 
 5. Construct the confidence interval as:
 $$\small \{\bar{x}- z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}, \bar{x}+ z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}\}$$
-$$\small \{1245.43- 1.65\frac{961.9}{\sqrt{100}}, 1245.43+ 1.65\frac{961.9}{\sqrt 100}\}$$
+$$\small \{1245.43- 1.65\frac{961.9}{\sqrt{100}}, 1245.43+ 1.65\frac{961.9}{\sqrt{100}}\}$$
 
 ---
 ### Interpreting confidence intervals
@@ -396,7 +392,7 @@ How do we interpret a 90% confidence interval we computed?
 
 - **Correct Interpretation**
   - We are 90% confident that the interval captures the true mean
-  - We are 90% confident that the true mean price of listings with grade>4.5 is between 1086.64 and 1404.22
+  - We are 90% confident that the true mean price of listings with cleanliness score > 4.5 is between 1086.64 and 1404.22
   
 --
 
@@ -432,7 +428,7 @@ Confidence intervals $\small \{\bar{x}- z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}, 
 
 In learnr:
 
-0. Set seed to to your student id. 
+0. Set seed to your student id.
 1. Take a sample of 100 observations from the data
 2. Calculate the mean and standard deviation of the sample
 3. Find critical value
@@ -445,11 +441,11 @@ In learnr:
 When should we use critical values from Normal Distribution?
 
 
-1. Original distribution (of $X$) is not normal: 
+1. Original distribution (of $X$) is not normal:
 
-  - If $n>30$- use critical values from normal distribution (40 if $\sigma$ unknown)
-  
-  - If $n<30$ - you are screwed
+  - If $n>30$ — use critical values from normal distribution (use $n>40$ if $\sigma$ unknown, to give $s$ enough data to approximate $\sigma$)
+
+  - If $n<30$ — normal approximation is unreliable; you need specialized methods (e.g., bootstrap)
 
 
 --
@@ -646,13 +642,18 @@ b) Average spending without free shipping is $182, can say anything about whethe
 ---
 ### Confidence Intervals for Variance
 
-- Suppose $X_1, X_2, ...X_n$ come from normal distribution
-- The sampling distribution of the sample variance  $S^2=\frac{\sum_i(X_i-\bar{X})^2}{n-1}$ is: 
+- Sometimes we care about how spread out a process is, not just its mean
+- Example: in manufacturing, a machine that produces bolts with high variance in diameter is unreliable, even if the average diameter is correct
 
-$$\small \frac{(n-1)S^2}{\sigma^2}\sim\chi_{n-1}$$
+--
+
+- Suppose $X_1, X_2, ...X_n$ come from a normal distribution
+- The sampling distribution of the sample variance  $S^2=\frac{\sum_i(X_i-\bar{X})^2}{n-1}$ is:
+
+$$\small \frac{(n-1)S^2}{\sigma^2}\sim\chi^2_{n-1}$$
 --
 - We will use the fact that:  
-$$\small P(\chi_{0.025,n-1}<\frac{(n-1)S^2}{\sigma^2}<\chi_{0.975,n-1})=0.95$$
+$$\small P(\chi^2_{0.025,n-1}<\frac{(n-1)S^2}{\sigma^2}<\chi^2_{0.975,n-1})=0.95$$
 
 ```{r, warning=FALSE, fig.height=3, out.width='100%'}
 df <- 9  # Degrees of freedom for chi-square distribution
@@ -698,16 +699,16 @@ axis(1, at = c(0, q_lower, 9,q_upper, 25), padj = 0.75,
 How we use it to construct the confidence interval?
 
 \begin{align*}
-0.95&= P(\chi_{0.025,n-1}<\frac{(n-1)S^2}{\sigma^2}<\chi_{0.975,n-1}) \\
-&= P(\frac{1}{\chi_{0.975,n-1}} < \frac{\sigma^2}{(n-1)S^2} < \frac{1}{\chi_{0.025,n-1}}) \\
-&= P(\frac{(n-1)S^2}{\chi_{0.975,n-1}} < \sigma^2 < \frac{(n-1)S^2}{\chi_{0.025,n-1}})
+0.95&= P\left(\chi^2_{0.025,n-1}<\frac{(n-1)S^2}{\sigma^2}<\chi^2_{0.975,n-1}\right) \\
+&= P\left(\frac{1}{\chi^2_{0.975,n-1}} < \frac{\sigma^2}{(n-1)S^2} < \frac{1}{\chi^2_{0.025,n-1}}\right) \\
+&= P\left(\frac{(n-1)S^2}{\chi^2_{0.975,n-1}} < \sigma^2 < \frac{(n-1)S^2}{\chi^2_{0.025,n-1}}\right)
 \end{align*}
 
 --
 So more generally, the confidence interval for the sample variance is 
 
-$$CI_{1-\alpha}=\{\frac{(n-1)S^2}{\chi_{1-\frac{\alpha}{2},n-1}}, \frac{(n-1)S^2}{\chi_{\frac{\alpha}{2},n-1}}\}$$
-- Where $\chi_{1-\frac{\alpha}{2},n-1}$ and $\chi_{\frac{\alpha}{2},n-1}$ are quantiles of $\chi_{n-1}$ distribution, such that $P(X<\chi_{1-\frac{\alpha}{2},n-1})=1-\frac{\alpha}{2}$ and $P(X<\chi_{\frac{\alpha}{2},n-1})=\frac{\alpha}{2}$
+$$CI_{1-\alpha}=\left\{\frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2},n-1}}, \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2},n-1}}\right\}$$
+- Where $\chi^2_{1-\frac{\alpha}{2},n-1}$ and $\chi^2_{\frac{\alpha}{2},n-1}$ are quantiles of the $\chi^2_{n-1}$ distribution, such that $P(X<\chi^2_{1-\frac{\alpha}{2},n-1})=1-\frac{\alpha}{2}$ and $P(X<\chi^2_{\frac{\alpha}{2},n-1})=\frac{\alpha}{2}$
 - You can find them in R using: 
 
 ```r
@@ -717,6 +718,6 @@ qchisq(alpha, df)
 ---
 ### Practice in learnr
 
-Suppose you produce sausages. As a quality control, you measure the level of fat in your sausages. You take a random sample of 12 sausages and you find the variance of 20  ( $grams^2$ ). Find 99% confidence interval for the variance. What assumptions you need?
+Suppose you produce sausages. As quality control, you measure the level of fat in your sausages. You take a random sample of 12 sausages and you find the sample variance of 20 $\text{grams}^2$. Find 99% confidence interval for the population variance. What assumptions do you need?
 
 ---
