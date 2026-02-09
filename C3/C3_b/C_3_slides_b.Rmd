@@ -13,9 +13,15 @@ output:
 ---   
 <style type="text/css">
 .remark-slide-content {
-    font-size: 20px;
+    font-size: 18px;
+    padding: 16px 64px 16px 64px;
 }
-
+.remark-slide-content h2 { font-size: 1.4em; margin-top: 0.2em; margin-bottom: 0.3em; }
+.remark-slide-content h3 { font-size: 1.2em; margin-top: 0.2em; margin-bottom: 0.3em; }
+.remark-slide-content h4 { font-size: 1.05em; margin-top: 0.1em; margin-bottom: 0.2em; }
+.remark-slide-content ul { margin-top: 0.2em; margin-bottom: 0.2em; }
+.remark-slide-content li { margin-bottom: 0.1em; }
+.learnr-ref { background: #eef2f7; border-left: 3px solid #2980b9; padding: 3px 8px; font-size: 0.85em; margin-top: 0.3em; display: inline-block; }
 </style>
 
 ```{r setup, include=FALSE}
@@ -42,15 +48,23 @@ load("sample_listing.Rda")
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
-style_mono_accent(base_color = "#43418A",
-colors = c(
-  red = "#f34213",
-  purple = "#3e2f5b",
-  orange = "#ff8811",
-  green = "#136f63",
-  blue = "#1E90FF",
-  white = "#FFFFFF"
-))
+style_mono_accent(
+  base_color = "#23395d",
+  header_font_google = google_font("Roboto Slab", "400"),
+  text_font_google = google_font("Source Sans Pro", "300", "300i"),
+  code_font_google = google_font("Fira Mono"),
+  text_font_size = "18px",
+  header_h2_font_size = "1.5rem",
+  header_h3_font_size = "1.25rem",
+  colors = c(
+    red = "#e74c3c",
+    purple = "#8e44ad",
+    orange = "#e67e22",
+    green = "#27ae60",
+    blue = "#2980b9",
+    white = "#FFFFFF"
+  )
+)
 ```
 
 
@@ -266,15 +280,16 @@ Use this procedure if $n>40$
 --
 
 5. Construct the confidence interval as:
-$$\small \{\bar{x}- z_{\frac{\alpha}{2}}*\underbrace{\frac{s}{\sqrt n}}_{SE}, \bar{x}+ z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}\}$$
+$$\small \left\{\bar{x}- z_{\frac{\alpha}{2}}\cdot\underbrace{\frac{s}{\sqrt{n}}}_{SE},\;\; \bar{x}+ z_{\frac{\alpha}{2}}\cdot\frac{s}{\sqrt{n}}\right\}$$
 
 
 ---
 ### Finding Critical Values
 
-- Suppose confidence interval is 99%. 
-- Then $\alpha=0.01$
+- Suppose confidence level is 99%, so $\alpha=0.01$
 - We are looking for $z_{\frac{\alpha}{2}}$ such that:
+
+.learnr-ref[**LearnR:** Finding critical values in normal — use `qnorm()` in R]
 $$P(-z_{\frac{\alpha}{2}}<Z<z_{\frac{\alpha}{2}})=0.99$$
 ```{r, warning=FALSE, fig.height=3, out.width='100%'}
 curve(dnorm(x),
@@ -380,8 +395,8 @@ Let's calculate 90% CI for average price of listings with cleanliness score > 4.
 --
 
 5. Construct the confidence interval as:
-$$\small \{\bar{x}- z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}, \bar{x}+ z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}\}$$
-$$\small \{1245.43- 1.65\frac{961.9}{\sqrt{100}}, 1245.43+ 1.65\frac{961.9}{\sqrt{100}}\}$$
+$$\small \left\{\bar{x}- z_{\frac{\alpha}{2}}\cdot\frac{s}{\sqrt{n}},\;\; \bar{x}+ z_{\frac{\alpha}{2}}\cdot\frac{s}{\sqrt{n}}\right\}$$
+$$\small \left\{1245.43- 1.65\cdot\frac{961.9}{\sqrt{100}},\;\; 1245.43+ 1.65\cdot\frac{961.9}{\sqrt{100}}\right\}$$
 
 ---
 ### Interpreting confidence intervals
@@ -414,12 +429,12 @@ How do we interpret a 90% confidence interval we computed?
 
 ### Shape of confidence intervals
 
-Confidence intervals $\small \{\bar{x}- z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}, \bar{x}+ z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}\}$ are wider when: 
+CI $= \left\{\bar{x}\pm z_{\frac{\alpha}{2}}\cdot\frac{s}{\sqrt{n}}\right\}$ are wider when: 
 - Confidence level is higher (99% is wider than 90%)
 - When $n$ is small
 - When $\sigma$ is large
 
-`r knitr::include_url('https://seeing-theory.brown.edu/frequentist-inference/index.html#section2', height='420px')`
+`r knitr::include_url('https://seeing-theory.brown.edu/frequentist-inference/index.html#section2', height='380px')`
 
 
 
@@ -428,11 +443,13 @@ Confidence intervals $\small \{\bar{x}- z_{\frac{\alpha}{2}}*\frac{s}{\sqrt n}, 
 
 In learnr:
 
-0. Set seed to your student id.
+0. Set seed to your student id
 1. Take a sample of 100 observations from the data
 2. Calculate the mean and standard deviation of the sample
 3. Find critical value
 4. Compute confidence interval
+
+.learnr-ref[**LearnR:** Practice — Build a 90% CI for ride-hailing fares and reveal the true mean]
 
 ---
 
@@ -565,7 +582,9 @@ text(3, 0.2, "2.5%", col = "black", cex = 1.5)
 ---
 ### Example
 
-- Practice in learnr finding critical values using the code:
+- Practice in LearnR finding critical values using the code:
+
+.learnr-ref[**LearnR:** Finding critical values in Student's t — compare `qt()` vs `qnorm()`]
 
 ```r
 qt(quantile, degrees_of_freedom)
@@ -619,12 +638,12 @@ text(3, 0.05, "2.5%", col = "black", cex = 1.5)
 ```
 - Once we have critical value, we construct the CI as before:
 
-$$\small \{\bar{x}- t_{\frac{\alpha}{2},n-1}*\frac{s}{\sqrt n}, \bar{x}+ t_{\frac{\alpha}{2},n-1}*\frac{s}{\sqrt n}\}$$
+$$\small \left\{\bar{x}- t_{\frac{\alpha}{2},n-1}\cdot\frac{s}{\sqrt{n}},\;\; \bar{x}+ t_{\frac{\alpha}{2},n-1}\cdot\frac{s}{\sqrt{n}}\right\}$$
 
 
 
 ---
-### Practice in learnr:
+### Practice: Free Shipping CI
 
 Your company implemented free shipping for a random group of customers. They want to know whether it increased spending.
 Here is your data:
@@ -637,6 +656,8 @@ a) Calculate 90% confidence interval. What assumptions you need?
 --
 
 b) Average spending without free shipping is $182, can say anything about whether free shipping increased spending?
+
+.learnr-ref[**LearnR:** Practice with Student T — compute the CI and draw conclusions]
 
 
 ---
@@ -708,7 +729,8 @@ How we use it to construct the confidence interval?
 So more generally, the confidence interval for the sample variance is 
 
 $$CI_{1-\alpha}=\left\{\frac{(n-1)S^2}{\chi^2_{1-\frac{\alpha}{2},n-1}}, \frac{(n-1)S^2}{\chi^2_{\frac{\alpha}{2},n-1}}\right\}$$
-- Where $\chi^2_{1-\frac{\alpha}{2},n-1}$ and $\chi^2_{\frac{\alpha}{2},n-1}$ are quantiles of the $\chi^2_{n-1}$ distribution, such that $P(X<\chi^2_{1-\frac{\alpha}{2},n-1})=1-\frac{\alpha}{2}$ and $P(X<\chi^2_{\frac{\alpha}{2},n-1})=\frac{\alpha}{2}$
+- Where $\chi^2_{1-\frac{\alpha}{2},n-1}$ and $\chi^2_{\frac{\alpha}{2},n-1}$ are quantiles of the $\chi^2_{n-1}$ distribution
+  - $P(X<\chi^2_{1-\frac{\alpha}{2},n-1})=1-\frac{\alpha}{2}$ and $P(X<\chi^2_{\frac{\alpha}{2},n-1})=\frac{\alpha}{2}$
 - You can find them in R using: 
 
 ```r
@@ -716,8 +738,10 @@ qchisq(alpha, df)
 ```
 
 ---
-### Practice in learnr
+### Practice: Sausage Variance CI
 
 Suppose you produce sausages. As quality control, you measure the level of fat in your sausages. You take a random sample of 12 sausages and you find the sample variance of 20 $\text{grams}^2$. Find 99% confidence interval for the population variance. What assumptions do you need?
+
+.learnr-ref[**LearnR:** Practice for CI of variance — use `qchisq()` to find critical values and build the interval]
 
 ---

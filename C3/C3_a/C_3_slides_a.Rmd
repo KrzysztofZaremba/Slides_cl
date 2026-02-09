@@ -6,7 +6,6 @@ output:
     self_contained: true
     css: xaringan-themer.css
     lib_dir: libs
-    google-font: FALSE 
     nature:
       highlightStyle: github
       countIncrementalSlides: true
@@ -14,10 +13,15 @@ output:
 ---   
 <style type="text/css">
 .remark-slide-content {
-    font-size: 20px;
+    font-size: 18px;
+    padding: 16px 64px 16px 64px;
 }
-
-
+.remark-slide-content h2 { font-size: 1.4em; margin-top: 0.2em; margin-bottom: 0.3em; }
+.remark-slide-content h3 { font-size: 1.2em; margin-top: 0.2em; margin-bottom: 0.3em; }
+.remark-slide-content h4 { font-size: 1.05em; margin-top: 0.1em; margin-bottom: 0.2em; }
+.remark-slide-content ul { margin-top: 0.2em; margin-bottom: 0.2em; }
+.remark-slide-content li { margin-bottom: 0.1em; }
+.learnr-ref { background: #eef2f7; border-left: 3px solid #2980b9; padding: 3px 8px; font-size: 0.85em; margin-top: 0.3em; display: inline-block; }
 </style>
 
 ```{r setup, include=FALSE}
@@ -46,15 +50,23 @@ load("sample_listing.Rda")
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
-style_mono_accent(base_color = "#43418A",
-colors = c(
-  red = "#f34213",
-  purple = "#3e2f5b",
-  orange = "#ff8811",
-  green = "#136f63",
-  blue = "#1E90FF",
-  white = "#FFFFFF"
-))
+style_mono_accent(
+  base_color = "#23395d",
+  header_font_google = google_font("Roboto Slab", "400"),
+  text_font_google = google_font("Source Sans Pro", "300", "300i"),
+  code_font_google = google_font("Fira Mono"),
+  text_font_size = "18px",
+  header_h2_font_size = "1.5rem",
+  header_h3_font_size = "1.25rem",
+  colors = c(
+    red = "#e74c3c",
+    purple = "#8e44ad",
+    orange = "#e67e22",
+    green = "#27ae60",
+    blue = "#2980b9",
+    white = "#FFFFFF"
+  )
+)
 ```
 ---
 ## Roadmap
@@ -189,11 +201,11 @@ knitr::kable(
 
 
 
-### What is a random sample? — Drawing Sample 1
+### Random Samples — Draw 1
 
 Each time we draw a sample, the random variables $P_i$ get realized into concrete values $p_i$.
 
-#### After Drawing the Sample (Sample 1)
+#### Sample 1
 
 ```{r, echo=FALSE, results='asis'}
 set.seed(1234)
@@ -218,11 +230,11 @@ knitr::kable(
 
 
 
-### What is a random sample? — Drawing Sample 2
+### Random Samples — Draw 2
 
 A different random draw from the same population gives different realized values.
 
-#### After Drawing the Sample (Sample 2)
+#### Sample 2
 
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(
@@ -243,11 +255,11 @@ knitr::kable(
 ```
 ---
 
-### What is a random sample? — Drawing Sample 3
+### Random Samples — Draw 3
 
 Yet another draw — note how the point estimate changes every time.
 
-#### After Drawing the Sample (Sample 3)
+#### Sample 3
 
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(
@@ -441,8 +453,7 @@ knitr::kable(
 
 ---
 
-### Estimators 
-
+### Estimators
 
 - The mean price in our sample is $\bar{p}_c=$ `r format(round(mean(Sample_list[Sample_list$clean=="Clean",]$price),3), scientific=FALSE)` MXN
 - This is our point estimate
@@ -459,7 +470,9 @@ knitr::kable(
 - **Sampling distribution** is the distribution of the estimator calculated from multiple random samples drawn from the same population.
 
 
-`r knitr::include_url('https://www.zoology.ubc.ca/~whitlock/Kingfisher/SamplingNormal.htm', height='500px')`
+`r knitr::include_url('https://www.zoology.ubc.ca/~whitlock/Kingfisher/SamplingNormal.htm', height='420px')`
+
+.learnr-ref[**LearnR:** Panels A, B, C — Explore sampling distributions of SD, IQR, and 99th percentile]
 
   
 ---
@@ -499,6 +512,8 @@ $$Bias(\hat{\theta})=E[\hat{\theta}]-\theta$$
 
 --
 - Is it a good estimator? (We'll come back to this)
+
+.learnr-ref[**LearnR:** Example 1 — Simulate the sampling distribution of a single observation]
 ---
 
 ### Example 2: Estimator = $(3X_1 + X_2)/5$
@@ -513,6 +528,7 @@ $$Bias(\hat{\theta})=E[\hat{\theta}]-\theta$$
 --
 - Bias: $E(\hat{\theta}_2) - \mu= \frac{4}{5}\mu - \mu=-\frac{1}{5}\mu$ (biased)
 
+.learnr-ref[**LearnR:** Example 2 — Simulate the biased estimator and observe the shift]
 ---
 ### Example 3: Estimator = $\frac{\sum{X_i}}{n}$ (sample mean)
 #### Expectation
@@ -526,6 +542,7 @@ $$Bias(\hat{\theta})=E[\hat{\theta}]-\theta$$
 --
 - Bias: $E(\hat{\theta}_3) - \mu=0$ (unbiased)
 
+.learnr-ref[**LearnR:** Example 3 — Compare the sample mean's spread to a single observation]
 ---
 
 ### Variance of the estimator
@@ -589,27 +606,22 @@ $$Var(\hat{\theta})=E[(\hat{\theta}-E[\hat\theta])^2]$$
 
 $$Var(\hat\mu_A)=Var\left(\frac{3X_1 + X_2}{4}\right)>Var\left(\frac{X_1+X_2+X_3+X_4}{4}\right)=Var(\hat\mu_B)$$
 - Relative efficiency of two (unbiased) estimators is the ratio of their variances
-$$Eff_{\hat\mu_A,\hat\mu_B}=\frac{Var\left(\frac{3X_1 + X_2}{4}\right)}{Var\left(\frac{X_1+X_2+X_3+X_4}{4}\right)}=\frac{\frac{10\sigma^2}{16}}{\frac{4\sigma^2}{16}}=\frac{10}{4}=\frac{5}{2}$$
+$$\small Eff_{\hat\mu_A,\hat\mu_B}=\frac{Var(\hat\mu_A)}{Var(\hat\mu_B)}=\frac{10\sigma^2/16}{4\sigma^2/16}=\frac{10}{4}=\frac{5}{2}$$
 
 ---
+### Variance: Examples
 
 --
-#### Example 1: Estimator $\hat{\theta}_1= X_i$
+#### Example 1: $\hat{\theta}_1= X_i$
+- $\small  Var(\hat{\theta}_1) = \sigma^2$
 
 --
-- $\small  Var(\hat{\theta}_1) = E[(X_i - \mu)^2]=\sigma^2$
-
---
-#### Example 3: Estimator $\hat{\theta}_3= \frac{\sum{X_i}}{n}$
-
---
-- $\small  Var(\hat{\theta}_3) = E\left[\left(\frac{\sum{X_i}}{n} - \mu\right)^2\right]=\frac{\sigma^2}{n}$
+#### Example 3: $\hat{\theta}_3= \bar{X} = \frac{\sum{X_i}}{n}$
+- $\small  Var(\hat{\theta}_3) = \frac{\sigma^2}{n}$
 
 --
 #### Estimator A: $\hat\mu_A= \frac{3X_1 + X_2}{4}$
-
---
-- $\small  Var(\hat\mu_A) = E\left[\left((3X_1 + X_2)/4 - \mu\right)^2\right]=\frac{9\sigma^2+\sigma^2}{16}=\frac{10\sigma^2}{16}$
+- $\small  Var(\hat\mu_A) = \frac{9\sigma^2+\sigma^2}{16}=\frac{10\sigma^2}{16}$
 
 
 ---
@@ -645,12 +657,9 @@ $$MSE(\hat{\theta})=E[(\hat{\theta}-\theta)^2]$$
 - It summarizes both the bias and the variance:
 
 \begin{align*}
-\small MSE(\hat{\theta})&=E[(\hat{\theta}-\theta)^2] \\
-& =E[(\hat{\theta}-E(\hat{\theta})+E(\hat{\theta})-\theta)^2]\\
-&= E[(\hat{\theta} - E(\hat{\theta}))^2 + 2(\hat{\theta} - E(\hat{\theta}))(E(\hat{\theta}) - \theta) + (E(\hat{\theta}) - \theta)^2] \\
-&= E[(\hat{\theta} - E(\hat{\theta}))^2] + E[2(\hat{\theta} - E(\hat{\theta}))(E(\hat{\theta}) - \theta)] + E[(E(\hat{\theta}) - \theta)^2] \\
-&= E[(\hat{\theta} - E(\hat{\theta}))^2] + 2(\underbrace{E[\hat{\theta} - E(\hat{\theta})]}_{=0})(E(\hat{\theta}) - \theta) + E[(E(\hat{\theta}) - \theta)^2] \\
-&= \text{var}(\hat{\theta}) + \text{Bias}(\hat{\theta})^2
+\scriptsize MSE(\hat{\theta})&\scriptsize =E[(\hat{\theta}-\theta)^2] =E[(\hat{\theta}-E(\hat{\theta})+E(\hat{\theta})-\theta)^2]\\
+&\scriptsize = E[(\hat{\theta} - E(\hat{\theta}))^2] + 2(\underbrace{E[\hat{\theta} - E(\hat{\theta})]}_{=0})(E(\hat{\theta}) - \theta) + (E(\hat{\theta}) - \theta)^2 \\
+&\scriptsize = \text{Var}(\hat{\theta}) + \text{Bias}(\hat{\theta})^2
 \end{align*}
 
 
@@ -664,7 +673,7 @@ $$MSE(\hat{\theta})=E[(\hat{\theta}-\theta)^2]$$
 - Red line shows the true value
 - Which of the estimators would you prefer?
 
-```{r, warning=FALSE, fig.height=4.1, out.width='100%'}
+```{r, warning=FALSE, fig.height=3.5, out.width='100%'}
 set.seed(123)
 n <- 1000
 true_mean <- 10
@@ -754,21 +763,21 @@ grid.arrange(p1, p2, ncol = 1)
 --
 - **Central Limit Theorem** says that **for large n**:
 
-$$S_n \mathrel{\dot\sim} \mathcal{N}(n\mu,\underbrace{\sqrt n \sigma}_{st.dev.}) \qquad\text{and}\qquad \bar{X}_n \mathrel{\dot\sim} \mathcal{N}(\mu,\frac{\sigma}{\sqrt n}) \qquad\text{and}\qquad Z_n \mathrel{\dot\sim} \mathcal{N}(0,1)$$
-- In large samples, sample mean is approximately normally distributed with mean $\mu$ and st. dev. $\frac{\sigma}{\sqrt{n}}$ - As n gets larger, the distribution becomes closer to normal
+$$\small S_n \mathrel{\dot\sim} \mathcal{N}\!\left(n\mu,\,\sqrt{n}\,\sigma\right), \quad \bar{X}_n \mathrel{\dot\sim} \mathcal{N}\!\left(\mu,\,\frac{\sigma}{\sqrt{n}}\right), \quad Z_n \mathrel{\dot\sim} \mathcal{N}(0,1)$$
+- In large samples, $\bar{X}_n$ is approximately normal with mean $\mu$ and st.dev. $\frac{\sigma}{\sqrt{n}}$. As $n$ grows, the approximation improves
 
 ---
 - The original distribution of $X_i$ does not matter (but outliers make convergence longer)
 - Larger **n**, tighter distribution around the mean 
 - Smaller ** $\sigma$ **, tighter distribution around the mean 
-`r knitr::include_url('https://seeing-theory.brown.edu/probability-distributions/index.html#section3', height='450px')`
+`r knitr::include_url('https://seeing-theory.brown.edu/probability-distributions/index.html#section3', height='400px')`
 Source: [Seeing Theory](https://seeing-theory.brown.edu/probability-distributions/index.html#section3)
 
 
 ---
 ### CLT also works for discrete variables!
-- Let $X_i\sim \text{Bernoulli}(p=0.5)$. Here is the distribution of $\bar{X}_n$ for different sample sizes:
-```{r, warning=FALSE, fig.height=4, out.width='100%'}
+- Let $X_i\sim \text{Bernoulli}(p=0.5)$. Distribution of $\bar{X}_n$ for different sample sizes:
+```{r, warning=FALSE, fig.height=3.5, out.width='100%'}
 # Set the number of repetitions and the sample sizes
 reps <- 10000
 sample.sizes <- c(5, 20, 75, 100)
@@ -829,6 +838,8 @@ Consider the event that a customer who opened the DiDi app will call the car.  S
 - X and Y are Bernoulli variables with probabilities 0.4 and 0.6 respectively
 - Suppose you have a random (iid) sample  of 100 customers opening the app from Cancun and 80 from Puerto Vallarta. 
 - What is the probability that more than 100 people will call the car?
+
+.learnr-ref[**LearnR:** DiDi Simulator — Work through the problem analytically, then verify with simulation]
 
 **Reminders**
 
@@ -911,11 +922,12 @@ p1
 ---
 
 ## Visualizing the Connection
-- The shaded areas represent probability that $X=Z^2>1$ 
-- Where $X \sim \chi^2(1)$ and $Z \sim N(0,1)$
+- The shaded areas represent probability that $X=Z^2>1$ where $X \sim \chi^2(1)$ and $Z \sim N(0,1)$
 - Shaded parts have the same area in both graphs
 
-```{r, warning=FALSE, fig.height=4, out.width='100%'}
+.learnr-ref[**LearnR:** Interactive Normal vs Chi-Square — adjust the threshold and see both distributions update]
+
+```{r, warning=FALSE, fig.height=3.5, out.width='100%'}
 # Generate random data from standard normal distribution
 set.seed(42)
 z <- rnorm(100000, mean = 0, sd = 1)
