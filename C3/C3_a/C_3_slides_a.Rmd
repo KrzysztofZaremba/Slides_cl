@@ -455,7 +455,7 @@ knitr::kable(
 
 ### Estimators
 
-- The mean price in our sample is $\bar{p}_c=$ `r format(round(mean(Sample_list[Sample_list$clean=="Clean",]$price),3), scientific=FALSE)` MXN
+- The mean price in our sample is $\bar{p}_c=$ `r format(round(mean(Sample_list[Sample_list$clean==TRUE,]$price),3), scientific=FALSE)` MXN
 - This is our point estimate
 
 --
